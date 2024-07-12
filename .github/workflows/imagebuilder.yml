@@ -89,5 +89,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            immortalwrt/imagebuilder:${{ matrix.targets }}-${{ github.event.inputs.branch }}
-            immortalwrt/imagebuilder:${{ matrix.targets }}-${{ github.event.inputs.version }}
+            lostsakura97/immortalwrt:${{ matrix.targets }}-${{ github.event.inputs.branch }}
+            lostsakura97/immortalwrt:${{ matrix.targets }}-${{ github.event.inputs.version }}
