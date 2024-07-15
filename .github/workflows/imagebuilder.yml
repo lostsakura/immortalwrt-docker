@@ -19,7 +19,7 @@ on:
 jobs:
   generate_targets:
     name: Generate target list
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       targets: ${{ steps.list_targets.outputs.targets }}
 
@@ -36,14 +36,14 @@ jobs:
           for TARGET in $(perl ./scripts/dump-target-info.pl targets 2>/dev/null | awk '{ print $1 }'); do \
             TARGET_LIST="${TARGET_LIST:+$TARGET_LIST,}\"${TARGET/\//-}\""; \
           done
-          JSON_LIST="{\"runner\": [\"ubuntu-latest\"],\"targets\":[\"armsr-armv8\"]}"
+          JSON_LIST="{\"runner\": [\"ubuntu-latest\"],\"targets\":[$TARGET_LIST]}"
           echo "$JSON_LIST" | jq .
           echo "targets=$JSON_LIST" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build ImageBuilder image for ${{ matrix.targets }}
     needs: generate_targets
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate_targets.outputs.targets)}}
@@ -77,7 +77,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.base
-          platforms: linux/arm64/v8
+          platforms: linux/amd64
           push: false
           tags: immortalwrt:base
 
@@ -86,7 +86,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.ib
-          platforms: linux/arm64/v8
+          platforms: linux/amd64
           push: true
           tags: |
             lostsakura97/immortalwrt:${{ matrix.targets }}-${{ github.event.inputs.branch }}
