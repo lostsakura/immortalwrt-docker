@@ -36,7 +36,7 @@ jobs:
           for TARGET in $(perl ./scripts/dump-target-info.pl targets 2>/dev/null | awk '{ print $1 }'); do \
             TARGET_LIST="${TARGET_LIST:+$TARGET_LIST,}\"${TARGET/\//-}\""; \
           done
-          JSON_LIST="{\"runner\": [\"ubuntu-latest\"],\"targets\":[$TARGET_LIST]}"
+          JSON_LIST="{\"runner\": [\"ubuntu-latest\"],\"targets\":[\"armsr-armv8\"]}"
           echo "$JSON_LIST" | jq .
           echo "targets=$JSON_LIST" >> "$GITHUB_OUTPUT"
 
