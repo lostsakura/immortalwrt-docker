@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2021 ImmortalWrt.org
 
-name: Build ImageBuilder images
+name: Build ImageBuilder images arm64/v8
 
 on:
   workflow_dispatch:
