@@ -19,7 +19,7 @@ on:
 jobs:
   generate_targets:
     name: Generate target list
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       targets: ${{ steps.list_targets.outputs.targets }}
 
@@ -36,14 +36,14 @@ jobs:
           for TARGET in $(perl ./scripts/dump-target-info.pl targets 2>/dev/null | awk '{ print $1 }'); do \
             TARGET_LIST="${TARGET_LIST:+$TARGET_LIST,}\"${TARGET/\//-}\""; \
           done
-          JSON_LIST="{\"runner\": [\"ubuntu-latest\"],\"targets\":[\"armsr-armv8\"]}"
+          JSON_LIST="{\"runner\": [\"self-hosted\"],\"targets\":[\"armsr-armv8\"]}"
           echo "$JSON_LIST" | jq .
           echo "targets=$JSON_LIST" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build ImageBuilder image for ${{ matrix.targets }}
     needs: generate_targets
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate_targets.outputs.targets)}}
